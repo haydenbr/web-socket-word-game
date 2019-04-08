@@ -5,7 +5,6 @@ module.exports = {
 	mode: 'development',
   entry: {
 		app: './src/index.js',
-		print: './src/print.js'
 	},
   output: {
     filename: '[name].bundle.js',
@@ -17,7 +16,7 @@ module.exports = {
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-			title: 'Bob is cool'
+			title: 'wordgame'
 		})
 	],
 	module: {
