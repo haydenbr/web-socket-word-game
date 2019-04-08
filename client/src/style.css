@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Open-Sans';
+	src: url('./fonts/OpenSans-Regular.ttf');
+
+  font-weight: 600;
+  font-style: normal;
+}
+
+.hello {
+	color: blue;
+	font-family: 'Open-Sans', 'Times New Roman';
+}
