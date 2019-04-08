@@ -18,3 +18,5 @@ npm start
 ```
 
 In the example, the client and server only send simple strings back and forth. For a more complex use-case, you would probably want to communicate with json objects. On the front end, you would build up your object and then pass it to the server via `socket.send(JSON.stringify(data))`. On the backend, you could deserialize these messages using something like [gson](https://github.com/google/gson).
+
+The server uses [tyrus](https://tyrus-project.github.io/) and javax packages for websockets ([here](https://docs.oracle.com/javaee/7/api/javax/websocket/server/package-summary.html) and [here](https://docs.oracle.com/javaee/7/api/javax/websocket/package-summary.html)). The client uses the native `WebSocket` object. Make sure to check out [MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) for more guidance on writing the client app.
