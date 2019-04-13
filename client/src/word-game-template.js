@@ -17,6 +17,7 @@ const template = `
 const hideElement = (element) => element.classList.add('hide');
 const showElement = (element) => element.classList.remove('hide');
 const addClickHandler = (element, callback) => element.addEventListener('click', (event) => callback(event));
+const removeClickHandler = (element, callback) => element.removeClickHandler('click', callback);
 
 export class WordGameTemplate {
 	constructor() {
@@ -33,6 +34,24 @@ export class WordGameTemplate {
 		this.$input = document.querySelector('#input');
 		this.$submitButton = document.querySelector('#submit');
 		this.$nextButton = document.querySelector('#next');
+	}
+
+	set onSubmit(handler) {
+		if (this._onSubmit) {
+			removeClickHandler(this.$submitButton, this._onSubmit);
+		}
+
+		this._onSubmit = handler;
+		addClickHandler(this.$submitButton, this._onSubmit);
+	}
+
+	set onNext(handler) {
+		if (this._onNext) {
+			removeClickHandler(this.$nextButton, this._onNext);
+		}
+
+		this._onNext = handler;
+		addClickHandler(this.$nextButton, this._onNext);
 	}
 
 	hideSubmit() {
@@ -64,12 +83,5 @@ export class WordGameTemplate {
 	}
 	setIncorrectResponse(correctUnscrambledWord) {
 		this.$userInstructions.textContent = `Sorry, the right answer is "${correctUnscrambledWord}"`;
-	}
-
-	onSubmit(callback) {
-		addClickHandler(this.$submitButton, callback);
-	}
-	onNext(callback) {
-		addClickHandler(this.$nextButton, callback);
 	}
 }

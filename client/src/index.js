@@ -7,21 +7,21 @@ let template = new WordGameTemplate();
 const initSocket = () => {
 	socket = new WebSocket('ws://localhost:4419/websockets/game');
 
-	template.onSubmit(() => {
+	template.onSubmit = () => {
 		let unscrambledWord = template.getInputValue();
 		sendMessage(socket, {type: ActionTypes.UNSCRAMBLED_WORD, unscrambledWord});
 
 		template.resetInputValue();
 		template.hideSubmit();
 		template.showNext();
-	});
+	};
 
-	template.onNext(() => {
+	template.onNext = () => {
 		template.resetInstructions();
 		template.showSubmit();
 		template.hideNext();
 		getNextScrambledWord(socket)
-	});
+	};
 
 	socket.onopen = (event) => {
 		console.log('connected', event);
