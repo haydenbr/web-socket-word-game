@@ -5,7 +5,7 @@ let socket;
 let template = new WordGameTemplate();
 
 const initSocket = () => {
-	socket = new WebSocket('ws://localhost:4419/websockets/game');
+	socket = new WebSocket('ws://localhost:2419/websockets/game');
 
 	template.onSubmit = () => {
 		let unscrambledWord = template.getInputValue();

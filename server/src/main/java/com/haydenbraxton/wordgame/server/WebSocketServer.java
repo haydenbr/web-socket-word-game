@@ -11,7 +11,7 @@ public class WebSocketServer {
 	}
 
 	public static void runServer() {
-		Server server = new Server("localhost", 4419, "/websockets", WordgameServerEndpoint.class);
+		Server server = new Server("localhost", 2419, "/websockets", WordgameServerEndpoint.class);
 
 		try {
 			server.start();
