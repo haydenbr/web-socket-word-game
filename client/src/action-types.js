@@ -1,0 +1,4 @@
+export const ActionTypes = {
+	SCRAMBLED_WORD: 'SCRAMBLED_WORD',
+	UNSCRAMBLED_WORD: 'UNSCRAMBLED_WORD',
+};

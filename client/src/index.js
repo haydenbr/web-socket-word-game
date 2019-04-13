@@ -1,35 +1,65 @@
-var template = document.createElement('template');
-template.innerHTML = `
-<h1>Word Game</h1>
+import { WordGameTemplate } from './word-game-template';
+import { ActionTypes } from './action-types';
 
-<div><i id="scrambled-word">waiting on server ...</i></div>
-<div>
-	<input id="input" />
-	<button id="submit">submit</button>
-</div>
-`;
+let socket;
+let template = new WordGameTemplate();
 
-document.body.appendChild(template.content.cloneNode(true));
-var scrambledWord = document.querySelector('#scrambled-word');
-var input = document.querySelector('#input');
-var submit = document.querySelector('#submit');
+const initSocket = () => {
+	socket = new WebSocket('ws://localhost:4419/websockets/game');
 
-var socket = new WebSocket('ws://localhost:4419/websockets/game');
-socket.onopen = (event) => {
-	console.log('connected', event);
-	socket.send('start');
+	template.onSubmit(() => {
+		let unscrambledWord = template.getInputValue();
+		sendMessage(socket, {type: ActionTypes.UNSCRAMBLED_WORD, unscrambledWord});
+
+		template.resetInputValue();
+		template.hideSubmit();
+		template.showNext();
+	});
+
+	template.onNext(() => {
+		template.resetInstructions();
+		template.showSubmit();
+		template.hideNext();
+		getNextScrambledWord(socket)
+	});
+
+	socket.onopen = (event) => {
+		console.log('connected', event);
+		getNextScrambledWord(socket);
+	}
+
+	socket.onclose = (event) => {
+		console.log('closed the connection', event);
+	}
+
+	socket.onmessage = (event) => {
+		let action = JSON.parse(event.data);
+		console.log('action', action);
+		handleAction(action);
+	}
 }
 
-socket.onmessage = (event) => {
-	console.log('message', event);
-	scrambledWord.textContent = event.data;
+const getNextScrambledWord = (socket) => sendMessage(socket, {type: ActionTypes.SCRAMBLED_WORD});
+
+const handleAction = (action) => {
+	switch (action.type) {
+		case ActionTypes.SCRAMBLED_WORD:
+			return handleNewScrambledWord(action);
+		case ActionTypes.UNSCRAMBLED_WORD:
+			return handleUnscrambledWordResponse(action);
+	}
 }
 
-socket.onclose = (event) => {
-	console.log('closed the connection', event)
-}
+const handleNewScrambledWord = (action) => template.updateScrambledWord(action.scrambledWord);
 
-submit.addEventListener('click', () => {
-	socket.send(input.value);
-	input.value = '';
-});
+const handleUnscrambledWordResponse = (action) => {
+	if (action.correct) {
+		template.setCorrectResponse();
+	} else {
+		template.setIncorrectResponse(action.correctUnscrambledWord);
+	}
+};
+
+const sendMessage = (socket, action) => socket.send(JSON.stringify(action));
+
+initSocket();

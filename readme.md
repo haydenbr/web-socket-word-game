@@ -7,6 +7,16 @@ To run the server,
 ```bash
 cd server
 mvn exec:java -Dexec.mainClass="com.haydenbraxton.wordgame.server.WebSocketServer"
+docker container run -it -v $(pwd):/server -p 4418:4418 maven bash
+```
+
+I'm too cheap to include a docker-compose file or docker image, but to run the server in docker
+
+```bash
+cd server
+docker container run -it -v $(pwd):/server -p 4418:4418 maven bash
+cd server # in the container
+mvn exec:java -Dexec.mainClass="com.haydenbraxton.wordgame.server.WebSocketServer" # in the container
 ```
 
 To run the client,

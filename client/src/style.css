@@ -10,3 +10,7 @@
 	color: blue;
 	font-family: 'Open-Sans', 'Times New Roman';
 }
+
+.hide {
+	display: none;
+}
